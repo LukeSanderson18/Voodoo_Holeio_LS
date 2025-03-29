@@ -10,4 +10,24 @@ public class EatableItem : MonoBehaviour, IEatable
     {
         Destroy(gameObject);
     }
+
+    void Awake()
+    {
+        //If you have no rigidbody, add one
+        if (!TryGetComponent(out Rigidbody rb))
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            
+        }
+        
+        //If you have no collider, add one
+        if (!TryGetComponent(out MeshCollider col))
+        {
+            col = gameObject.AddComponent<MeshCollider>();
+            col.convex = true;
+        }
+        
+        
+    }
 }
