@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 121be107ed67d87439e932b4f412adb9, type: 3}
+  m_Name: testing patette
+  m_EditorClassIdentifier: 
+  objects: []
+  prefabs:
+  - prefab: {fileID: 1442872508595929541, guid: 66ddb37ef3207ad4fabab30441231bca,
+      type: 3}
+    weight: 1
+    minMaxScaleMltp: {x: 1, y: 1}
+    normalAllighn: 0
+    snapChildren: 0
+  spawnAsPrefab: 1
+  minMaxScale: {x: 0, y: 0}
+  randRotAdd: {x: 0, y: 0, z: 0}
+  maxNormal: 180
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  avoidedLayer:
+    serializedVersion: 2
+    m_Bits: 0

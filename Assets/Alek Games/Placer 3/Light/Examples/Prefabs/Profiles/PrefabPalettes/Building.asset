@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 121be107ed67d87439e932b4f412adb9, type: 3}
+  m_Name: Building
+  m_EditorClassIdentifier: 
+  objects: []
+  prefabs:
+  - prefab: {fileID: 703452668063895429, guid: 2191d4d64415fd242a3dd9349347364b, type: 3}
+    weight: 1
+    minMaxScaleMltp: {x: 1, y: 1}
+    normalAllighn: 0.5
+    snapChildren: 0
+  - prefab: {fileID: 3841824749197468585, guid: 90cd1c41298364c42b2f3f5fbd8a7b8f,
+      type: 3}
+    weight: 1
+    minMaxScaleMltp: {x: 1, y: 1}
+    normalAllighn: 0.5
+    snapChildren: 0
+  - prefab: {fileID: 5171397528211953191, guid: f4f7329ea5cf2a94bb3e36d202206902,
+      type: 3}
+    weight: 1
+    minMaxScaleMltp: {x: 1, y: 1}
+    normalAllighn: 0.5
+    snapChildren: 0
+  spawnAsPrefab: 1
+  minMaxScale: {x: 1, y: 1}
+  randRotAdd: {x: 0, y: 0, z: 0}
+  maxNormal: 30
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 19
+  avoidedLayer:
+    serializedVersion: 2
+    m_Bits: 0
