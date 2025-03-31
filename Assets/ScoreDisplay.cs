@@ -21,7 +21,7 @@ public class ScoreDisplay : MonoBehaviour
     {
         float a = (float)newScore / (float)scoreToFill;
         
-        Debug.Log(a);
+//        Debug.Log(a);
         //scoreText.text = newScore + "PTS";
         levelCompleteFill.fillAmount = a;
     }

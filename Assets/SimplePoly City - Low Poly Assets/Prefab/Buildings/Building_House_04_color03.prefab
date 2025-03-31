@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -7135722066113084650}
   m_Layer: 0
   m_Name: Building_House_04_color03
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -3,6 +3,7 @@ using System;
 using TMPro;
 using System.Collections;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class Hole : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class Hole : MonoBehaviour
     [SerializeField] private MeshRenderer levelUpRenderer;
     private Material levelUpMaterial;
     [SerializeField] private float tweenDuration = 0.5f;
+    
+    [SerializeField] private float baseSpeed = 5f;
+    public float MovementSpeed => baseSpeed * transform.localScale.x;
+
     
     public event Action<int> OnScoreChanged;
 
@@ -64,7 +69,7 @@ public class Hole : MonoBehaviour
 
     private void LevelUp()
     {
-        transform.localScale *= growthScaleFactor;
+        transform.localScale += Vector3.one * growthScaleFactor;
         level++;
         
         if (levelUpMaterial != null)
@@ -79,6 +84,11 @@ public class Hole : MonoBehaviour
             scoreText.text = score + " / " + currentThreshold;
         if (scoreFill != null)
             scoreFill.fillAmount = (float)score / currentThreshold;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AddScore(2);
+        }
     }
 
     private void TweenTextureOffset(Material mat)
