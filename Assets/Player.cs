@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Joystick joystick;
+    [SerializeField] private Joystick joystick;
     [SerializeField] private Hole hole;
     public GameObject arrow; // Assign your arrow in the Inspector
     public float arrowDistance = 1.5f;
 
     private Camera mainCam;
     private Rigidbody holeRb;
+    Vector3 moveDir;
+    bool gameStarted = false;
 
     void Awake()
     {
@@ -20,16 +22,50 @@ public class Player : MonoBehaviour
             holeRb = hole.GetComponent<Rigidbody>();
         }
     }
-
-    // Use FixedUpdate for physics-based movement.
-    void FixedUpdate()
+    
+    public void Start()
     {
-        Vector3 moveDir = GetJoystickDirection();
-        MoveHole(moveDir);
+        GameManager.Instance.OnGameStarted += HandleGameStarted;
+        GameManager.Instance.OnGameEnded += HandleGameEnded;
+    }
+
+    void OnDisable()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnGameStarted -= HandleGameStarted;
+            GameManager.Instance.OnGameEnded -= HandleGameEnded;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        gameStarted = true;
+    }
+
+    private void HandleGameEnded()
+    {
+        gameStarted = false;
+    }
+    
+    void Update()
+    {
+        if (!gameStarted)
+            return;
+
+        moveDir = GetJoystickDirection();
         UpdateArrow(moveDir);
     }
 
-    // Returns a direction vector based on joystick input relative to the camera.
+    void FixedUpdate()
+    {
+        if (!gameStarted)
+            return;
+
+        MoveHole(moveDir);
+    }
+
+    // Returns a direction vector based on joystick input relative to the cam
     Vector3 GetJoystickDirection()
     {
         Vector3 forward = mainCam.transform.forward;
@@ -56,7 +92,7 @@ public class Player : MonoBehaviour
             direction.Normalize();
             // Position arrow relative to the hole's current scale.
             arrow.transform.position =
-                hole.transform.position + direction * (hole.transform.localScale.x * arrowDistance);
+                hole.transform.position + direction * (hole.Size * arrowDistance);
             arrow.transform.position += Vector3.up * 0.03f;
             arrow.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             arrow.transform.eulerAngles =

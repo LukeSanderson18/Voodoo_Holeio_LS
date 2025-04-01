@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class CameraOcclusion : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+    [SerializeField] private Hole playerHole;
     [SerializeField] private LayerMask occlusionMask;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float checkInterval = 0.1f;
@@ -53,12 +53,12 @@ public class CameraOcclusion : MonoBehaviour
 
     private void CheckOcclusion()
     {
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction = playerHole.transform.position - transform.position;
         float distance = direction.magnitude;
         direction.Normalize();
 
         HashSet<Renderer> newOccluders = new HashSet<Renderer>();
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, distance, occlusionMask);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, playerHole.Size, direction, distance, occlusionMask);
 
         foreach (RaycastHit hit in hits)
         {
@@ -111,7 +111,7 @@ public class CameraOcclusion : MonoBehaviour
             activeSequences.Remove(renderer);
         }
 
-        float targetValue = isOccluding ? 0f : 1f;
+        float targetValue = isOccluding ? 0.2f : 1f;
         sequence = DOTween.Sequence();
         sequence.Append(material.DOFloat(targetValue, fadePropertyName, fadeDuration));
         sequence.SetEase(Ease.InOutQuad);

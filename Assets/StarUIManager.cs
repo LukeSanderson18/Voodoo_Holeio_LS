@@ -8,7 +8,7 @@ public class StarUIManager : MonoBehaviour
 {
     public static StarUIManager Instance { get; private set; }
     public RectTransform targetUI;
-    public string starPoolTag = "StarUI"; // Ensure this matches the pooled object's name
+    public string starPoolTag = "StarUI";
     public Canvas canvas;
     public float animationDuration = 0.5f;
     
@@ -17,7 +17,10 @@ public class StarUIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
         mainCam = Camera.main;
     }
     public void SpawnStar(Vector3 worldPosition)
@@ -47,6 +50,7 @@ public class StarUIManager : MonoBehaviour
         }
 
         targetUI.DOKill();
+        targetUI.transform.localScale = Vector3.one;
         targetUI.DOPunchScale(Vector3.one * 0.2f, 0.3f);
         starRect.position = endPos;
         starRect.gameObject.SetActive(false);

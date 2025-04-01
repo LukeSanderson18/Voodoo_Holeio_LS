@@ -10,13 +10,20 @@ public class ChangeHitObjectLayer : MonoBehaviour
     public float torqueForce = 5f;  // Strength of flipping torque
 
     public float maxAllowedSize = 3f;
+    
+    private Hole hole;
+
+    void Awake()
+    {
+        hole = transform.parent.GetComponent<Hole>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<EatableItem>(out var eatable))
         {
             // Only process if the item's size is within the hole's allowed limit.
-            float max = transform.localScale.x * maxAllowedSize;
+            float max = hole.Size * maxAllowedSize;
             if (eatable.Size <= max)
             {
                 if (other.TryGetComponent(out Rigidbody rb))
@@ -26,11 +33,6 @@ public class ChangeHitObjectLayer : MonoBehaviour
 
                 other.gameObject.layer = LayerOnEnter;
             }
-            else
-            {
-                
-                Debug.Log("Item too big to be eaten! Size: " + eatable.Size + " Max: " + max);
-            }
         }
     }
 
@@ -38,7 +40,7 @@ public class ChangeHitObjectLayer : MonoBehaviour
     {
         if (other.TryGetComponent<EatableItem>(out var eatable))
         {
-            float max = transform.localScale.x * maxAllowedSize;
+            float max = hole.Size * maxAllowedSize;
             if (eatable.Size <= max)
             {
                 if (other.TryGetComponent(out Rigidbody rb))
@@ -66,7 +68,7 @@ public class ChangeHitObjectLayer : MonoBehaviour
     {
         if (other.TryGetComponent<EatableItem>(out var eatable))
         {
-            float max = transform.localScale.x * maxAllowedSize;
+            float max = hole.Size * maxAllowedSize;
             if (eatable.Size <= max)
             {
                 other.gameObject.layer = LayerOnExit;

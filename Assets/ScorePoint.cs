@@ -4,14 +4,13 @@ using System;
 
 public class ScorePoint : MonoBehaviour
 {
-    public event Action<int> OnItemEaten;
+    public event Action<int, Transform> OnItemEaten;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.TryGetComponent<IEatable>(out IEatable eatable))
         {
-            OnItemEaten?.Invoke(eatable.Score);
-            StarUIManager.Instance.SpawnStar(other.transform.position);
+            OnItemEaten?.Invoke(eatable.Score, other.transform);
             eatable.Eat();
         }
     }

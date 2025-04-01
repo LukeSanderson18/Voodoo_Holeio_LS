@@ -1,29 +1,38 @@
-// ScoreDisplay.cs
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreDisplay : MonoBehaviour
 {
-    public Hole playerHole;  // Assign the player's hole in the inspector
-    //public TMP_Text scoreText;
+    public Hole playerHole;
 
     public SlicedFilledImage levelCompleteFill;
+    int totalScore = 0;
     public int scoreToFill = 100;
+    public TMP_Text scoreToFillText;
+    
+    
 
     private void Awake()
     {
         playerHole.OnScoreChanged += UpdateScore;
+        scoreToFillText.text = scoreToFill + " PTS";
     }
 
     private void UpdateScore(int newScore)
     {
-        float a = (float)newScore / (float)scoreToFill;
+        totalScore += newScore;
         
-//        Debug.Log(a);
-        //scoreText.text = newScore + "PTS";
+        float a = (float)totalScore / (float)scoreToFill;
         levelCompleteFill.fillAmount = a;
+        
+        if(totalScore >= scoreToFill)
+        {
+            Debug.Log("Level Complete");
+            totalScore = 0;
+            levelCompleteFill.fillAmount = 1;
+            GameManager.Instance.Won();
+        }
     }
 
     private void OnDestroy()
