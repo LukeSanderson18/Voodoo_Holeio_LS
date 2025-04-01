@@ -82,6 +82,9 @@ public class Player : MonoBehaviour
     void MoveHole(Vector3 move)
     {
         Vector3 newPosition = holeRb.position + move * (Time.fixedDeltaTime * hole.MovementSpeed);
+        // Clamp to map boundaries - to fix!!
+        newPosition.x = Mathf.Clamp(newPosition.x, hole.minX, hole.maxX);
+        newPosition.z = Mathf.Clamp(newPosition.z, hole.minZ, hole.maxZ);
         holeRb.MovePosition(newPosition);
     }
 

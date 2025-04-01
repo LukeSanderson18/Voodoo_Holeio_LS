@@ -24,13 +24,16 @@ public class Hole : MonoBehaviour
     [SerializeField] private MeshRenderer levelUpRenderer;
     private Material levelUpMaterial;
     [SerializeField] private float tweenDuration = 0.5f;
+    [SerializeField] private float tweenSizeGrowDuration = 0.2f;
 
     [SerializeField] private float baseSpeed = 5f;
     public float MovementSpeed => baseSpeed * Size;
-
     public float Size => transform.localScale.x;
 
     [HideInInspector] public bool gameStarted = false;
+    
+    public float minX = -20f, maxX = 250f;
+    public float minZ = 20f, maxZ = 220f;
 
     public event Action<int> OnScoreChanged;
 
@@ -89,7 +92,7 @@ public class Hole : MonoBehaviour
 
         if (isPlayer)
         {
-            OnScoreChanged?.Invoke(score);
+            OnScoreChanged?.Invoke(points);
 
             UpdateUI();
             
@@ -110,6 +113,8 @@ public class Hole : MonoBehaviour
             
             if(other != null)
                 StarUIManager.Instance.SpawnStar(other.position);
+            
+            GameManager.Instance.HapticLight();
 
         }
     }
@@ -126,12 +131,15 @@ public class Hole : MonoBehaviour
 
     private void LevelUp()
     {
-        transform.localScale += Vector3.one * growthScaleFactor;
         level++;
-
+        
+        Vector3 targetScale = transform.localScale + Vector3.one * growthScaleFactor;
+        transform.DOScale(targetScale, tweenSizeGrowDuration).SetEase(Ease.OutQuad);
+    
         if (levelUpMaterial != null)
             TweenTextureOffset(levelUpMaterial);
     }
+
 
     private void UpdateUI()
     {
@@ -165,13 +173,17 @@ public class Hole : MonoBehaviour
         {
             if (gameStarted)
             {
-                float randomX = UnityEngine.Random.Range(-20f, 250f);
-                float randomZ = UnityEngine.Random.Range(20f, 220f);
+                float randomX = UnityEngine.Random.Range(minX, maxX);
+                float randomZ = UnityEngine.Random.Range(minZ, maxZ);
                 Vector3 targetPos = new Vector3(randomX, transform.position.y, randomZ);
 
                 while (Vector3.Distance(transform.position, targetPos) > 0.1f)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, targetPos, MovementSpeed * Time.deltaTime);
+                    if(gameStarted == false)
+                    {
+                        break;
+                    }
                     yield return null;
                 }
 
@@ -191,6 +203,8 @@ public class Hole : MonoBehaviour
         if (!isPlayer)
             return;
         
+        
+        
         Hole otherHole = other.GetComponent<Hole>();
         if (otherHole != null && otherHole != this)
         {
@@ -199,11 +213,13 @@ public class Hole : MonoBehaviour
                 // Player is bigger: eat the other hole.
                 GameManager.Instance.RegisterKill();
                 Destroy(otherHole.gameObject);
+                GameManager.Instance.HapticHeavy();
             }
             else if (this.Size < otherHole.Size)
             {
                 Destroy(gameObject);
                 GameManager.Instance.Lost();
+                GameManager.Instance.HapticHeavy();
             }
         }
     }

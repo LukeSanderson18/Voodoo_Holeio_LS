@@ -32,7 +32,21 @@ public class ChangeHitObjectLayer : MonoBehaviour
                 }
 
                 other.gameObject.layer = LayerOnEnter;
+                
+                StartCoroutine(FailsafeDestroy(other.gameObject));
+
             }
+        }
+    }
+    
+    //A failsafe for objects that get stuck, for example - a building getting stuck in the hole at a dodgy angle.
+    //Could very easily work around this, by slightly shrinking the collider size over time - but this is a quick fix.
+    private IEnumerator FailsafeDestroy(GameObject obj)
+    {
+        yield return new WaitForSeconds(5f);
+        if (obj != null)
+        {
+            obj.SetActive(false);
         }
     }
 

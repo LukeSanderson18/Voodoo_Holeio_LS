@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Lofelt.NiceVibrations;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public UIView startView;
     public UIView winView;
     public UIView loseView;
+    public UIView yumView;
 
     public Button restartButton;
     public Button loseButton;
@@ -36,15 +38,20 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
         Instance = this;
+        
+        //Lazy reset of timer etc
+        StopAllCoroutines();
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
-        
+
         restartButton.onClick.AddListener(Reset);
         loseButton.onClick.AddListener(Reset);
-        
+
         // Format text in mm:ss
         timerText.text = TimeSpan.FromSeconds(maxLevelTime).ToString(@"mm\:ss");
         UpdateKillUI();
@@ -59,29 +66,29 @@ public class GameManager : MonoBehaviour
     {
         gameStarted = true;
         HideStartView();
-        
+
         OnGameStarted?.Invoke();
 
         StartTimer();
     }
-    
+
     void StartTimer()
     {
         StartCoroutine(Timer());
     }
-    
+
     IEnumerator Timer()
     {
         if (won || !gameStarted)
             yield break;
-        
+
         while (levelTimer < maxLevelTime)
         {
             yield return new WaitForSeconds(1f);
             levelTimer += 1f;
             timerText.text = TimeSpan.FromSeconds(maxLevelTime - levelTimer).ToString(@"mm\:ss");
         }
-        
+
         Lost();
     }
 
@@ -92,14 +99,14 @@ public class GameManager : MonoBehaviour
             Reset();
         }
     }
-    
+
     public void Won()
     {
         ShowWinView();
         OnGameEnded?.Invoke();
         won = true;
     }
-    
+
     public void Lost()
     {
         ShowLoseView();
@@ -110,19 +117,22 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
+
     public void RegisterKill()
     {
         killCount++;
         UpdateKillUI();
+        
+        yumView.Hide(true);
+        yumView.Show();
     }
 
     void UpdateKillUI()
     {
         if (killCountText != null)
-            killCountText.text = "Kills: " + killCount;
+            killCountText.text = killCount.ToString();
     }
-    
+
     public void ShowStartView()
     {
         startView.Show();
@@ -145,5 +155,15 @@ public class GameManager : MonoBehaviour
     {
         winView.Show();
         loseView.Hide();
+    }
+
+    public void HapticLight()
+    {
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
+    }
+    
+    public void HapticHeavy()
+    {
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.HeavyImpact);
     }
 }

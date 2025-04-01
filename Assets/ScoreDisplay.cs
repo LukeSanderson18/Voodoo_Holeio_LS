@@ -8,7 +8,7 @@ public class ScoreDisplay : MonoBehaviour
 
     public SlicedFilledImage levelCompleteFill;
     int totalScore = 0;
-    public int scoreToFill = 100;
+    public int scoreToFill = 300;
     public TMP_Text scoreToFillText;
     
     
@@ -19,9 +19,9 @@ public class ScoreDisplay : MonoBehaviour
         scoreToFillText.text = scoreToFill + " PTS";
     }
 
-    private void UpdateScore(int newScore)
+    private void UpdateScore(int points)
     {
-        totalScore += newScore;
+        totalScore += points;
         
         float a = (float)totalScore / (float)scoreToFill;
         levelCompleteFill.fillAmount = a;

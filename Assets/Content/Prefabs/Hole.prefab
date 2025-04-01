@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1548872711728915344}
   - component: {fileID: 1453104254103743971}
   - component: {fileID: 8655226132185987899}
+  - component: {fileID: 2880115082816189528}
   m_Layer: 7
   m_Name: Hole
   m_TagString: Hole
@@ -62,7 +63,13 @@ MonoBehaviour:
   scoreFill: {fileID: 2806941505746474669}
   levelUpRenderer: {fileID: 8715395591818046505}
   tweenDuration: 0.5
+  tweenSizeGrowDuration: 0.2
   baseSpeed: 2.5
+  gameStarted: 0
+  minX: -20
+  maxX: 260
+  minZ: -20
+  maxZ: 220
 --- !u!54 &8655226132185987899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -90,6 +97,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &2880115082816189528
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093921408212858622}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.27
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2842919290993805845
 GameObject:
   m_ObjectHideFlags: 0
